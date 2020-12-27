@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	_ "github.com/funnycode-org/gotty/sample"
 	"github.com/funnycode-org/gotty/server"
 	"github.com/urfave/cli"
 	"os"
@@ -15,8 +16,7 @@ var (
 		Usage: "start server",
 		Action: func(c *cli.Context) error {
 			server := server.NewServer()
-			go server.Start()
-			return nil
+			return server.Start()
 		},
 	}
 	cmdStartClient = cli.Command{

@@ -24,6 +24,6 @@ func RegisterListener(name string, factory factory) error {
 
 func FindListener(name string) factory {
 	lock.RLock()
-	defer lock.Unlock()
+	defer lock.RUnlock()
 	return registries[name]
 }

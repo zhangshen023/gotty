@@ -9,6 +9,10 @@ type WrappedSession struct {
 	session *Session
 }
 
+func (w *WrappedSession) GetListener() base.Listener {
+	panic("can't be used!")
+}
+
 func (w *WrappedSession) GetWrappedSession() interface{} {
 	panic("can't be used!")
 }

@@ -9,8 +9,9 @@ import (
 )
 
 type Server struct {
-	concurrency uint // 并发个数
-	workPool    *WorkPool
+	concurrency    uint // 并发个数
+	workPool       *WorkPool
+	serverListener listener.Listener
 }
 
 func NewServer() *Server {
@@ -18,6 +19,7 @@ func NewServer() *Server {
 		concurrency: base.GottyConfig.Server.Concurrency,
 		workPool:    newWorkPool(base.GottyConfig.Server.Concurrency, base.GottyConfig.Server.SessionNumPerConnection),
 	}
+	server.serverListener = server.FindListener()
 	return server
 }
 
@@ -26,7 +28,7 @@ func (server *Server) Start() error {
 	if base.GottyConfig.Server.Port > 0 {
 		port = base.GottyConfig.Server.Port
 	}
-	ln, err := net.Listen("tcp", strconv.Itoa(int(port)))
+	ln, err := net.Listen("tcp", fmt.Sprintf(":%s", strconv.Itoa(int(port))))
 	if err != nil {
 		return err
 	}
@@ -37,10 +39,8 @@ func (server *Server) Start() error {
 		}
 		// 每个Client一个Goroutine
 
-		session := NewSession(server.FindListener())
+		session := NewSession(server.serverListener)
 		wrappedSession := newWrappedSession(session)
-		// 使用一个安全的session
-		session.l.OnOpen(wrappedSession)
 		connection := base.NewConnection(conn, session, wrappedSession, true)
 		err = server.workPool.AddConnection(connection)
 		if err != nil {

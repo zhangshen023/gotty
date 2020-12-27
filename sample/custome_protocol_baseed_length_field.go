@@ -48,16 +48,17 @@ func (c *CustomizeProtocolBasedLengthField) Decode(myBytes []byte) (decodeRrr er
 	return
 }
 
-func (c *CustomizeProtocolBasedLengthField) Encode(srcObj interface{}) ([]byte, error) {
-	cpblf := srcObj.(CustomizeProtocolBasedLengthField)
-	myBytes := make([]byte, 1+1+8+len(cpblf.Body))
-	buf := bytes.NewBuffer(myBytes)
-	buf.WriteByte(cpblf.Type)
-	buf.WriteByte(cpblf.Flag)
-	binary.Write(buf, binary.LittleEndian, cpblf.Length)
-	buf.WriteString(cpblf.Body)
-	return buf.Bytes(), nil
-}
+//
+//func (c *CustomizeProtocolBasedLengthField) Encode(srcObj interface{}) ([]byte, error) {
+//	cpblf := srcObj.(CustomizeProtocolBasedLengthField)
+//	myBytes := make([]byte, 1+1+8+len(cpblf.Body))
+//	buf := bytes.NewBuffer(myBytes)
+//	buf.WriteByte(cpblf.Type)
+//	buf.WriteByte(cpblf.Flag)
+//	binary.Write(buf, binary.LittleEndian, cpblf.Length)
+//	buf.WriteString(cpblf.Body)
+//	return buf.Bytes(), nil
+//}
 
 func newProtocolBasedLengthField(maxFrameLength int64) protocol.ProtocolDecoder {
 	var cpblf CustomizeProtocolBasedLengthField

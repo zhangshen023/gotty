@@ -7,7 +7,7 @@ import (
 	"sync"
 )
 
-const configPath = "../config/config.yaml"
+const configPath = "config/config.yaml"
 
 var GottyConfig *Config
 var once sync.Once

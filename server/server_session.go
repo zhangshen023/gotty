@@ -22,6 +22,10 @@ type Session struct {
 	WrappedSession   WrappedSession
 }
 
+func (s *Session) GetListener() base.Listener {
+	return s.l
+}
+
 func (s *Session) GetSendChannel() <-chan []byte {
 	return s.send
 }
@@ -47,6 +51,7 @@ func NewSession(l listener.Listener) *Session {
 		sessionId:     atomic.AddInt64(&number, 1),
 		l:             l,
 		receivedBytes: make([]byte, 1024),
+		send:          make(chan []byte, 10),
 	}
 }
 

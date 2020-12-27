@@ -31,8 +31,8 @@ func SetProtocol(rp reflect.Type, pd protocol.ProtocolDecoder) error {
 
 func GetProtocol() (protocol.ProtocolDecoder, reflect.Type, error) {
 	locker.RLock()
-	defer locker.Unlock()
-	if registryProtocolKind != nil {
+	defer locker.RUnlock()
+	if registryProtocolKind == nil {
 		return nil, nil, errors.New("没有注册过协议！")
 	} else {
 		return registryProtocolKind, registryProtocol, nil

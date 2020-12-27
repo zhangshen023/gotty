@@ -1,8 +1,8 @@
 server:
   concurrency: 4
   sessionNumPerConnection: 100
-  port: 8080
-  listenerName: default
+  port: 8081
+  listenerName: my_server_listener
   protocolType: length_field
   maxFrameLength: 10000
 #  protocolName:

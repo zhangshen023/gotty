@@ -13,6 +13,5 @@ type ProtocolDecoder interface {
 //}
 
 type CustomizeProtocol interface {
-	Encode(srcObj interface{}) ([]byte, error)
 	Decode(bytes []byte) error
 }

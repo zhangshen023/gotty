@@ -118,7 +118,11 @@ func (con *Connection) SendPkgs() {
 	for {
 		select {
 		case bytes := <-con.session.GetSendChannel():
-			for i := 0; i < GottyConfig.Server.Retry; i++ {
+			retry := 1
+			if GottyConfig.Server.Retry > 0 {
+				retry = GottyConfig.Server.Retry
+			}
+			for i := 0; i < retry; i++ {
 				_, err := con.con.Write(bytes)
 				if err == nil {
 					break
@@ -136,6 +140,10 @@ func (con *Connection) Do() {
 			log.Printf("dumped safely,err:%v", err)
 		}
 	}()
+	err := con.session.GetListener().OnOpen(con.wrappedSession)
+	if err != nil {
+		log.Println("监听器异常:", err)
+	}
 	go con.LoopReceivePkgs()
 	go con.SendPkgs()
 	for {

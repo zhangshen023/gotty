@@ -9,4 +9,5 @@ type Session interface {
 	GetRegistryProtocol() reflect.Type
 	GetSendChannel() <-chan []byte
 	GetWrappedSession() interface{}
+	GetListener() Listener
 }
